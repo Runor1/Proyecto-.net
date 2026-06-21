@@ -1,6 +1,43 @@
 @backend_HostAddress = http://localhost:5095
 
-GET {{backend_HostAddress}}/weatherforecast/
+### 1. Obtener todos los clientes activos
+GET {{backend_HostAddress}}/api/clientes
 Accept: application/json
 
 ###
+
+### 2. Obtener un cliente específico por ID (Cambia el 1 por el ID que quieras buscar)
+GET {{backend_HostAddress}}/api/clientes/1
+Accept: application/json
+
+###
+
+### 3. Registrar un nuevo cliente (POST)
+POST {{backend_HostAddress}}/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Doris Navas",
+  "correo": "doris@salem.com",
+  "password": "PasswordSeguro123",
+  "role": "ADMIN"
+}
+
+###
+### 4.Modificar un cliente existente (PUT)
+PUT {{backend_HostAddress}}/api/clientes/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "nombre": "Doris Elieth Navas",
+  "correo": "doris.navas@salem.com",
+  "password": "PasswordSeguro123", 
+  "role": "ADMIN"
+}
+
+###
+
+### 5. Dar de baja a un cliente (DELETE - Borrado Lógico)
+DELETE {{backend_HostAddress}}/api/clientes/1
+Accept: application/json

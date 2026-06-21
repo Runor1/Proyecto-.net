@@ -1,150 +1,81 @@
-
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using backend.Models;
-using backend.Data;
+using backend.Repositories;
+using Microsoft.AspNetCore.Mvc;
 
-public class ClientesController : Controller
+namespace backend.Controllers
 {
-    private readonly ApplicationDbContext _context;
-
-    public ClientesController(ApplicationDbContext context)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ClientesController(IClienteRepository clienteRepository) : ControllerBase
     {
-        _context = context;
-    }
+        private readonly IClienteRepository _clienteRepository = clienteRepository;
 
-    // GET: CLIENTES
-    public async Task<IActionResult> Index()    
-    {
-        return View(await _context.Clientes.ToListAsync());
-    }
-
-    // GET: CLIENTES/Details/5
-    public async Task<IActionResult> Details(int? id)
-    {
-        if (id == null)
+        // GET: api/clientes
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            return NotFound();
+            var clientes = await _clienteRepository.GetAllAsync();
+            return Ok(clientes);
         }
 
-        var cliente = await _context.Clientes
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (cliente == null)
+        // GET: api/clientes/5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            return NotFound();
+            var cliente = await _clienteRepository.GetByIdAsync(id);
+            if (cliente == null) return NotFound(new { mensaje = "Usuario no encontrado" });
+
+            return Ok(cliente);
         }
 
-        return View(cliente);
-    }
-
-    // GET: CLIENTES/Create
-    public IActionResult Create()
-    {
-        return View();
-    }
-
-    // POST: CLIENTES/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,Nombre,Correo,Password,Role,Activo")] Cliente cliente)
-    {
-        if (ModelState.IsValid)
+        // POST: api/clientes
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] Cliente cliente)
         {
-            _context.Add(cliente);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        return View(cliente);
-    }
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-    // GET: CLIENTES/Edit/5
-    public async Task<IActionResult> Edit(int? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
+            await _clienteRepository.AddAsync(cliente);
+            return CreatedAtAction(nameof(GetById), new { id = cliente.Id }, cliente);
         }
 
-        var cliente = await _context.Clientes.FindAsync(id);
-        if (cliente == null)
+        // PUT: api/clientes/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] Cliente cliente)
         {
-            return NotFound();
-        }
-        return View(cliente);
-    }
+            // 1. Validar que el ID de la URL coincida con el del cuerpo JSON
+            if (id != cliente.Id)
+                return BadRequest(new { mensaje = "El ID de la URL no coincide con el del cuerpo." });
 
-    // POST: CLIENTES/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("Id,Nombre,Correo,Password,Role,Activo")] Cliente cliente)
-    {
-        if (id != cliente.Id)
-        {
-            return NotFound();
-        }
+            // 2. Buscar si el cliente realmente existe y está activo
+            var existente = await _clienteRepository.GetByIdAsync(id);
+            if (existente == null)
+                return NotFound(new { mensaje = "El usuario no existe o fue dado de baja." });
 
-        if (ModelState.IsValid)
-        {
-            try
+            // 3. Mapear los campos editables del formulario original de la guardería
+            existente.Nombre = cliente.Nombre;
+            existente.Correo = cliente.Correo;
+            existente.Role = cliente.Role;
+
+            // 4. Lógica de contraseña opcional (Vacía mantiene la anterior)
+            if (!string.IsNullOrWhiteSpace(cliente.Password))
             {
-                _context.Update(cliente);
-                await _context.SaveChangesAsync();
+                existente.Password = cliente.Password;
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ClienteExists(cliente.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return RedirectToAction(nameof(Index));
-        }
-        return View(cliente);
-    }
 
-    // GET: CLIENTES/Delete/5
-    public async Task<IActionResult> Delete(int? id)
-    {
-        if (id == null)
+            // 5. Guardar los cambios actualizados en el repositorio
+            await _clienteRepository.UpdateAsync(existente);
+            return Ok(new { mensaje = "Usuario actualizado con éxito." });
+        }
+
+        // DELETE: api/clientes/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            return NotFound();
+            var existente = await _clienteRepository.GetByIdAsync(id);
+            if (existente == null) return NotFound(new { mensaje = "El usuario no existe" });
+
+            await _clienteRepository.DeleteLogicalAsync(id);
+            return Ok(new { mensaje = "Usuario dado de baja correctamente" });
         }
-
-        var cliente = await _context.Clientes
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (cliente == null)
-        {
-            return NotFound();
-        }
-
-        return View(cliente);
-    }
-
-    // POST: CLIENTES/Delete/5
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? id)
-    {
-        var cliente = await _context.Clientes.FindAsync(id);
-        if (cliente != null)
-        {
-            _context.Clientes.Remove(cliente);
-        }
-
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
-    }
-
-    private bool ClienteExists(int? id)
-    {
-        return _context.Clientes.Any(e => e.Id == id);
     }
 }
