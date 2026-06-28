@@ -22,13 +22,13 @@ namespace Proyecto_3.Models
         public string? Descripcion { get; set; }
 
         [Required]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         [Required]
         public int TipoMascotaId { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        public User User { get; set; } = null!;
+        public User? User { get; set; } = null!;
 
         [ForeignKey(nameof(TipoMascotaId))]
         public TipoMascota TipoMascota { get; set; } = null!;

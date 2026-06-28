@@ -9,7 +9,7 @@ Accept: application/json
 
 
 ### Obtener usuario por ID
-GET {{baseUrl}}/api/admin/users/1
+GET {{baseUrl}}/api/admin/users/2
 Accept: application/json
 
 

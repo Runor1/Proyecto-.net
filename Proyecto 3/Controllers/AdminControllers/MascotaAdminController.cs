@@ -64,16 +64,14 @@ namespace Proyecto_3.Controllers.AdminControllers
         [HttpPost]
         public async Task<IActionResult> CreateMascota(MascotaCreateDto dto)
         {
-            var usuarioExiste = await _context.Users
-                .AnyAsync(u => u.Id == dto.UserId);
-
-            if (!usuarioExiste)
+            if (dto.UserId != null)
             {
-                return BadRequest(new
+                var usuario = await _context.Users.FindAsync(dto.UserId);
+
+                if (usuario == null)
                 {
-                    success = false,
-                    message = "El usuario no existe."
-                });
+                    return BadRequest("El usuario no existe.");
+                }
             }
 
             var tipoExiste = await _context.TipoMascotas
