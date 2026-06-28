@@ -8,13 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DTOs\NewFolder\**" />
-    <Content Remove="DTOs\NewFolder\**" />
-    <EmbeddedResource Remove="DTOs\NewFolder\**" />
-    <None Remove="DTOs\NewFolder\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.9">
@@ -27,6 +20,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="10.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DTOs\Habitaciones\" />
+    <Folder Include="DTOs\Mascotas\" />
+    <Folder Include="DTOs\Citas\" />
+    <Folder Include="DTOs\TipoMascotas\" />
   </ItemGroup>
 
 </Project>

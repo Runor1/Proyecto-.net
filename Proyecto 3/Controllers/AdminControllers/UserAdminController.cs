@@ -1,11 +1,113 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Proyecto_3.Data;
+using Proyecto_3.DTOs.Users;
+using Microsoft.AspNetCore.Identity;
 
 namespace Proyecto_3.Controllers.AdminControllers
 {
-    [Route("api/[controller]")]
+    [Route("api/admin/users")]
     [ApiController]
     public class UserAdminController : ControllerBase
     {
+        private readonly AppDbContext _context;
+        private readonly PasswordHasher<User> _passwordHasher = new();
+
+        public UserAdminController(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        {
+            return await _context.Users.ToListAsync();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUser(int id)
+        {
+            var usuario = await _context.Users.FindAsync(id);
+
+            if (usuario == null)
+                return NotFound(new { success = false, message = "Usuario no encontrado" });
+
+            return Ok(new { success = true, data = usuario, message = "Usuario encontrado" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateUser(UserCreateDto dto)
+        {
+            var correoExiste = await _context.Users.AnyAsync(u => u.Correo == dto.Correo);
+
+            if (correoExiste)
+                return BadRequest(new { success = false, message = "El correo ya está registrado" });
+
+            var usuario = new User
+            {
+                Nombre = dto.Nombre,
+                Correo = dto.Correo,
+                Role = dto.Role
+            };
+
+            usuario.Password = _passwordHasher.HashPassword(usuario, dto.Password);
+
+            _context.Users.Add(usuario);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetUser), new { id = usuario.Id }, new
+            {
+                success = true,
+                data = usuario,
+                message = "Usuario creado correctamente"
+            });
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, UserUpdateDto dto)
+        {
+            var usuario = await _context.Users.FindAsync(id);
+
+            if (usuario == null)
+                return NotFound(new { success = false, message = "Usuario no encontrado" });
+
+            var correoExiste = await _context.Users
+                .AnyAsync(u => u.Correo == dto.Correo && u.Id != id);
+
+            if (correoExiste)
+                return BadRequest(new { success = false, message = "El correo ya está registrado por otro usuario" });
+
+            usuario.Nombre = dto.Nombre;
+            usuario.Correo = dto.Correo;
+            usuario.Role = dto.Role;
+
+            if (!string.IsNullOrWhiteSpace(dto.Password))
+            {
+                usuario.Password = _passwordHasher.HashPassword(usuario, dto.Password);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                success = true,
+                data = usuario,
+                message = "Usuario actualizado correctamente"
+            });
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var usuario = await _context.Users.FindAsync(id);
+
+            if (usuario == null)
+                return NotFound(new { success = false, message = "Usuario no encontrado" });
+
+            _context.Users.Remove(usuario);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { success = true, message = "Usuario eliminado correctamente" });
+        }
     }
 }
