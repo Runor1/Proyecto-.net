@@ -19,15 +19,34 @@ namespace Proyecto_3.Controllers.AdminControllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            var usuarios = await _context.Users
+                .Select(u => new
+                {
+                    u.Id,
+                    u.Nombre,
+                    u.Correo,
+                    u.Role
+                })
+                .ToListAsync();
+
+            return Ok(usuarios);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
-            var usuario = await _context.Users.FindAsync(id);
+            var usuario = await _context.Users
+                .Where(u => u.Id == id)
+                .Select(u => new
+                {
+                    u.Id,
+                    u.Nombre,
+                    u.Correo,
+                    u.Role
+                })
+                .FirstOrDefaultAsync();
 
             if (usuario == null)
                 return NotFound(new { success = false, message = "Usuario no encontrado" });
@@ -58,7 +77,13 @@ namespace Proyecto_3.Controllers.AdminControllers
             return CreatedAtAction(nameof(GetUser), new { id = usuario.Id }, new
             {
                 success = true,
-                data = usuario,
+                data = new
+                {
+                    usuario.Id,
+                    usuario.Nombre,
+                    usuario.Correo,
+                    usuario.Role
+                },
                 message = "Usuario creado correctamente"
             });
         }
@@ -91,7 +116,13 @@ namespace Proyecto_3.Controllers.AdminControllers
             return Ok(new
             {
                 success = true,
-                data = usuario,
+                data = new
+                {
+                    usuario.Id,
+                    usuario.Nombre,
+                    usuario.Correo,
+                    usuario.Role
+                },
                 message = "Usuario actualizado correctamente"
             });
         }
