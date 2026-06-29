@@ -1,6 +1,207 @@
-@Proyecto_3_HostAddress = http://localhost:5200
+### Admin
+### USERAdmin
 
-GET {{Proyecto_3_HostAddress}}/weatherforecast/
+@baseUrl = http://localhost:5200
+
+### Obtener todos los usuarios admin
+GET {{baseUrl}}/api/admin/users
+Accept: application/json
+
+
+### Obtener usuario por ID
+GET {{baseUrl}}/api/admin/users/2
+Accept: application/json
+
+
+### Crear usuario
+POST {{baseUrl}}/api/admin/users
+Content-Type: application/json
+
+{
+  "nombre": "Bryan",
+  "correo": "bryan@gmail.com",
+  "password": "123456",
+  "role": "Admin"
+}
+
+
+### Actualizar usuario
+PUT {{baseUrl}}/api/admin/users/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "nombre": "Bryan Actualizado",
+  "correo": "bryan.actualizado@gmail.com",
+  "password": "123456",
+  "role": "Admin"
+}
+
+
+### Eliminar usuario
+DELETE {{baseUrl}}/api/admin/users/1
+Accept: application/json
+
+###Tipo Mascota
+
+### Obtener todos los tipos de mascota
+GET {{baseUrl}}/api/admin/tipomascotas
 Accept: application/json
 
 ###
+
+### Obtener un tipo de mascota por ID
+GET {{baseUrl}}/api/admin/tipomascotas/1
+Accept: application/json
+
+###
+
+### Crear un tipo de mascota
+POST {{baseUrl}}/api/admin/tipomascotas
+Content-Type: application/json
+
+{
+  "nombreTipo": "Perro"
+}
+
+###
+
+### Actualizar un tipo de mascota
+PUT {{baseUrl}}/api/admin/tipomascotas/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "nombreTipo": "Gato"
+}
+
+###
+
+### Eliminar un tipo de mascota
+DELETE {{baseUrl}}/api/admin/tipomascotas/1
+Accept: application/json
+
+###Habitacion
+### Crear habitación
+POST http://localhost:5200/api/admin/habitaciones
+Content-Type: application/json
+
+{
+  "descripcion": "Habitación 1",
+  "tipoMascotaId": 1
+}
+
+### Listar habitaciones
+GET http://localhost:5200/api/admin/habitaciones
+Accept: application/json
+
+### Obtener habitación por ID
+GET http://localhost:5200/api/admin/habitaciones/1
+Accept: application/json
+
+### Actualizar habitación
+PUT http://localhost:5200/api/admin/habitaciones/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "descripcion": "Habitación 1 Actualizada",
+  "tipoMascotaId": 1
+}
+
+### Eliminar habitación
+DELETE http://localhost:5200/api/admin/habitaciones/1
+Accept: application/json
+
+###Mascotas
+### Obtener todas las mascotas
+GET http://localhost:5200/api/admin/mascotas
+Accept: application/json
+
+###
+
+### Obtener una mascota por ID
+GET http://localhost:5200/api/admin/mascotas/1
+Accept: application/json
+
+###
+
+### Crear una mascota
+POST http://localhost:5200/api/admin/mascotas
+Content-Type: application/json
+
+{
+  "nombre": "Rocky",
+  "peso": 12.5,
+  "altura": 0.45,
+  "descripcion": "Golden Retriever muy amigable",
+  "userId": 2,
+  "tipoMascotaId": 1
+}
+
+###
+
+### Actualizar una mascota
+PUT http://localhost:5200/api/admin/mascotas/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "nombre": "Rocky Actualizado",
+  "peso": 13.2,
+  "altura": 0.47,
+  "descripcion": "Actualización de datos",
+  "userId": 1,
+  "tipoMascotaId": 1
+}
+
+###
+
+### Eliminar una mascota
+DELETE http://localhost:5200/api/admin/mascotas/1
+Accept: application/json
+
+### Citas
+### Obtener todas las citas
+GET http://localhost:5200/api/admin/citas
+Accept: application/json
+
+###
+
+### Obtener una cita por ID
+GET http://localhost:5200/api/admin/citas/1
+Accept: application/json
+
+
+### Crear una cita
+POST http://localhost:5200/api/admin/citas
+Content-Type: application/json
+
+{
+  "fechaInicio": "2026-07-01T08:00:00",
+  "fechaSalida": "2026-07-05T17:00:00",
+  "userId": 2,
+  "mascotaId": 1,
+  "habitacionId": 1
+}
+
+###
+
+### Actualizar una cita
+PUT http://localhost:5200/api/admin/citas/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "fechaInicio": "2026-07-02T09:00:00",
+  "fechaSalida": "2026-07-06T16:00:00",
+  "userId": 1,
+  "mascotaId": 1,
+  "habitacionId": 1
+}
+
+###
+
+### Eliminar una cita
+DELETE http://localhost:5200/api/admin/citas/1
+Accept: application/json

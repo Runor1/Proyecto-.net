@@ -1,37 +1,27 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Proyecto_3.Models
+namespace Proyecto_3.DTOs.Mascotas
 {
-    [Table("mascotas")]
-    public class Mascota
+    public class MascotaCreateDto
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         [MaxLength(255)]
         public string Nombre { get; set; } = string.Empty;
 
         [Required]
+        [Range(0.01, 9999)]
         public decimal Peso { get; set; }
 
         [Required]
+        [Range(0.01, 9999)]
         public decimal Altura { get; set; }
 
         public string? Descripcion { get; set; }
 
+       
         public int? UserId { get; set; }
 
         [Required]
         public int TipoMascotaId { get; set; }
-
-        [ForeignKey(nameof(UserId))]
-        public User? User { get; set; } = null!;
-
-        [ForeignKey(nameof(TipoMascotaId))]
-        public TipoMascota TipoMascota { get; set; } = null!;
-
-        public ICollection<Cita> Citas { get; set; } = new List<Cita>();
     }
 }
