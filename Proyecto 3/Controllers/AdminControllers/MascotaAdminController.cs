@@ -64,13 +64,18 @@ namespace Proyecto_3.Controllers.AdminControllers
         [HttpPost]
         public async Task<IActionResult> CreateMascota(MascotaCreateDto dto)
         {
-            if (dto.UserId != null)
+            if (dto.UserId.HasValue)
             {
-                var usuario = await _context.Users.FindAsync(dto.UserId);
+                var usuarioExiste = await _context.Users
+                    .AnyAsync(u => u.Id == dto.UserId.Value);
 
-                if (usuario == null)
+                if (!usuarioExiste)
                 {
-                    return BadRequest("El usuario no existe.");
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = "El usuario no existe."
+                    });
                 }
             }
 
@@ -114,15 +119,15 @@ namespace Proyecto_3.Controllers.AdminControllers
             _context.Mascotas.Add(mascota);
             await _context.SaveChangesAsync();
 
-            mascota = await _context.Mascotas
+            var mascotaCreada = await _context.Mascotas
                 .Include(m => m.User)
                 .Include(m => m.TipoMascota)
-                .FirstAsync(m => m.Id == mascota.Id);
+                .FirstOrDefaultAsync(m => m.Id == mascota.Id);
 
             return CreatedAtAction(nameof(GetMascota), new { id = mascota.Id }, new
             {
                 success = true,
-                data = mascota,
+                data = mascotaCreada,
                 message = "Mascota creada correctamente."
             });
         }
@@ -151,16 +156,19 @@ namespace Proyecto_3.Controllers.AdminControllers
                 });
             }
 
-            var usuarioExiste = await _context.Users
-                .AnyAsync(u => u.Id == dto.UserId);
-
-            if (!usuarioExiste)
+            if (dto.UserId.HasValue)
             {
-                return BadRequest(new
+                var usuarioExiste = await _context.Users
+                    .AnyAsync(u => u.Id == dto.UserId.Value);
+
+                if (!usuarioExiste)
                 {
-                    success = false,
-                    message = "El usuario no existe."
-                });
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = "El usuario no existe."
+                    });
+                }
             }
 
             var tipoExiste = await _context.TipoMascotas
@@ -200,15 +208,15 @@ namespace Proyecto_3.Controllers.AdminControllers
 
             await _context.SaveChangesAsync();
 
-            mascota = await _context.Mascotas
+            var mascotaActualizada = await _context.Mascotas
                 .Include(m => m.User)
                 .Include(m => m.TipoMascota)
-                .FirstAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             return Ok(new
             {
                 success = true,
-                data = mascota,
+                data = mascotaActualizada,
                 message = "Mascota actualizada correctamente."
             });
         }

@@ -104,7 +104,7 @@ namespace Proyecto_3.Migrations
                     b.Property<int>("TipoMascotaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -214,9 +214,7 @@ namespace Proyecto_3.Migrations
 
                     b.HasOne("User", "User")
                         .WithMany("Mascotas")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("TipoMascota");
 

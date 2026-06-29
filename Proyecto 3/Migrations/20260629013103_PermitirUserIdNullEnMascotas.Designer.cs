@@ -12,8 +12,8 @@ using Proyecto_3.Data;
 namespace Proyecto_3.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260628224319_PermitirUserIdNullEnMascota")]
-    partial class PermitirUserIdNullEnMascota
+    [Migration("20260629013103_PermitirUserIdNullEnMascotas")]
+    partial class PermitirUserIdNullEnMascotas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -107,7 +107,7 @@ namespace Proyecto_3.Migrations
                     b.Property<int>("TipoMascotaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -217,9 +217,7 @@ namespace Proyecto_3.Migrations
 
                     b.HasOne("User", "User")
                         .WithMany("Mascotas")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("TipoMascota");
 

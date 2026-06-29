@@ -18,7 +18,7 @@ namespace Proyecto_3.DTOs.Mascotas
 
         public string? Descripcion { get; set; }
 
-        [Required]
+       
         public int? UserId { get; set; }
 
         [Required]
