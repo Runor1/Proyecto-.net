@@ -1,4 +1,5 @@
-锘縰sing Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_3.Data;
 using Proyecto_3.DTOs.Habitaciones;
@@ -8,6 +9,7 @@ namespace Proyecto_3.Controllers.AdminControllers
 {
     [Route("api/admin/habitaciones")]
     [ApiController]
+    [Authorize(Roles = "ADMIN")]
     public class HabitacionController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -46,7 +48,7 @@ namespace Proyecto_3.Controllers.AdminControllers
                 return NotFound(new
                 {
                     success = false,
-                    message = "Habitaci贸n no encontrada."
+                    message = "Habitaci髇 no encontrada."
                 });
             }
 
@@ -54,7 +56,7 @@ namespace Proyecto_3.Controllers.AdminControllers
             {
                 success = true,
                 data = habitacion,
-                message = "Habitaci贸n encontrada."
+                message = "Habitaci髇 encontrada."
             });
         }
 
@@ -84,7 +86,7 @@ namespace Proyecto_3.Controllers.AdminControllers
                 return BadRequest(new
                 {
                     success = false,
-                    message = "Ya existe una habitaci贸n con esa descripci贸n."
+                    message = "Ya existe una habitaci髇 con esa descripci髇."
                 });
             }
 
@@ -105,7 +107,7 @@ namespace Proyecto_3.Controllers.AdminControllers
             {
                 success = true,
                 data = habitacion,
-                message = "Habitaci贸n creada correctamente."
+                message = "Habitaci髇 creada correctamente."
             });
         }
 
@@ -129,7 +131,7 @@ namespace Proyecto_3.Controllers.AdminControllers
                 return NotFound(new
                 {
                     success = false,
-                    message = "Habitaci贸n no encontrada."
+                    message = "Habitaci髇 no encontrada."
                 });
             }
 
@@ -157,7 +159,7 @@ namespace Proyecto_3.Controllers.AdminControllers
                 return BadRequest(new
                 {
                     success = false,
-                    message = "Ya existe otra habitaci贸n con esa descripci贸n."
+                    message = "Ya existe otra habitaci髇 con esa descripci髇."
                 });
             }
 
@@ -174,7 +176,7 @@ namespace Proyecto_3.Controllers.AdminControllers
             {
                 success = true,
                 data = habitacion,
-                message = "Habitaci贸n actualizada correctamente."
+                message = "Habitaci髇 actualizada correctamente."
             });
         }
 
@@ -189,7 +191,7 @@ namespace Proyecto_3.Controllers.AdminControllers
                 return NotFound(new
                 {
                     success = false,
-                    message = "Habitaci贸n no encontrada."
+                    message = "Habitaci髇 no encontrada."
                 });
             }
 
@@ -199,7 +201,7 @@ namespace Proyecto_3.Controllers.AdminControllers
             return Ok(new
             {
                 success = true,
-                message = "Habitaci贸n eliminada correctamente."
+                message = "Habitaci髇 eliminada correctamente."
             });
         }
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_3.Data;
 using Proyecto_3.DTOs.Mascotas;
@@ -8,6 +9,7 @@ namespace Proyecto_3.Controllers.AdminControllers
 {
     [Route("api/admin/mascotas")]
     [ApiController]
+    [Authorize(Roles = "ADMIN")]
     public class MascotaAdminController : ControllerBase
     {
         private readonly AppDbContext _context;

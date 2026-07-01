@@ -1,4 +1,3 @@
-//using backend.data;
 using backend.DTOs;
 
 using Microsoft.AspNetCore.Authorization;
@@ -42,7 +41,6 @@ namespace backend.Controllers
         }
 
 
-        // Este endpoint requiere un token JWT válido
         [Authorize]
         [HttpGet("datos-seguros")]
         public IActionResult GetDatos()
@@ -50,7 +48,6 @@ namespace backend.Controllers
             return Ok("Este endpoint está protegido con JWT");
         }
 
-        // Este endpoint es público
         [AllowAnonymous]
         [HttpGet("publico")]
         public IActionResult GetPublico()

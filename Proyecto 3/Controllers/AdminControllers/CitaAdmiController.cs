@@ -1,4 +1,5 @@
-Ôªøusing Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_3.Data;
 using Proyecto_3.DTOs.Citas;
@@ -8,6 +9,7 @@ namespace Proyecto_3.Controllers.AdminControllers
 {
     [Route("api/admin/citas")]
     [ApiController]
+    [Authorize(Roles = "ADMIN")]
     public class CitaAdminController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -98,7 +100,7 @@ namespace Proyecto_3.Controllers.AdminControllers
                 return BadRequest(new
                 {
                     success = false,
-                    message = "La habitaci√≥n no existe."
+                    message = "La habitaciÛn no existe."
                 });
             }
 
@@ -127,7 +129,7 @@ namespace Proyecto_3.Controllers.AdminControllers
                 return BadRequest(new
                 {
                     success = false,
-                    message = "La habitaci√≥n ya est√° ocupada en ese rango de fechas."
+                    message = "La habitaciÛn ya est· ocupada en ese rango de fechas."
                 });
             }
 
@@ -215,7 +217,7 @@ namespace Proyecto_3.Controllers.AdminControllers
                 return BadRequest(new
                 {
                     success = false,
-                    message = "La habitaci√≥n no existe."
+                    message = "La habitaciÛn no existe."
                 });
             }
 
@@ -231,7 +233,7 @@ namespace Proyecto_3.Controllers.AdminControllers
                 return BadRequest(new
                 {
                     success = false,
-                    message = "La habitaci√≥n ya est√° ocupada en ese rango de fechas."
+                    message = "La habitaciÛn ya est· ocupada en ese rango de fechas."
                 });
             }
 

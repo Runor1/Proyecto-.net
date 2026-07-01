@@ -1,14 +1,16 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_3.Data;
 using Proyecto_3.DTOs.Users;
-using Microsoft.AspNetCore.Identity;
 using Proyecto_3.Models;
 
 namespace Proyecto_3.Controllers.AdminControllers
 {
     [Route("api/admin/users")]
     [ApiController]
+    [Authorize(Roles = "ADMIN")]
     public class UserAdminController : ControllerBase
     {
         private readonly AppDbContext _context;
