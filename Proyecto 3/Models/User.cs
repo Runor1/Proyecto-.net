@@ -1,4 +1,4 @@
-﻿using Proyecto_3.Models;
+using Proyecto_3.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -27,4 +27,5 @@ public class User
     public ICollection<Mascota> Mascotas { get; set; } = new List<Mascota>();
 
     public ICollection<Cita> Citas { get; set; } = new List<Cita>();
+
 }

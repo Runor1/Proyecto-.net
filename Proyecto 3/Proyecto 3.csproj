@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+
     <Compile Remove="DTOs\NewFolder\**" />
     <Content Remove="DTOs\NewFolder\**" />
     <EmbeddedResource Remove="DTOs\NewFolder\**" />
@@ -16,6 +17,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.9" />
+
+    <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.8" />
+
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.9">
       <PrivateAssets>all</PrivateAssets>
@@ -27,6 +33,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="10.0.2" />
+
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.19.1" />
+
   </ItemGroup>
 
 </Project>
