@@ -13,8 +13,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 
-var connectionString = builder.Configuration.GetConnectionString("AppDbContext")
-    ?? throw new InvalidOperationException("Connection string 'AppDbContext' not found.");
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));

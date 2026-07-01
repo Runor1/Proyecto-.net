@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -25,7 +25,6 @@ namespace Proyecto_3.Migrations
 
             modelBuilder.Entity("Proyecto_3.Models.Cita", b =>
 
-            modelBuilder.Entity("backend.Models.User", b =>
 
                 {
                     b.Property<int>("Id")
@@ -181,7 +180,7 @@ namespace Proyecto_3.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                        .HasColumnType("nvarchar(max)");
+                       
 
 
                     b.HasKey("Id");

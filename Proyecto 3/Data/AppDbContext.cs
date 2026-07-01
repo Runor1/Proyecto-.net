@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Proyecto_3.Models;
-using backend.Models;
 
 
 namespace Proyecto_3.Data
@@ -39,9 +38,8 @@ namespace Proyecto_3.Data
                 .WithMany(h => h.Citas)
                 .HasForeignKey(c => c.HabitacionId)
                 .OnDelete(DeleteBehavior.Restrict);
-        }
-    
-    modelBuilder.Entity<User>().HasData(
+
+            modelBuilder.Entity<User>().HasData(
             new User
             {
                 Id = 1,
@@ -49,7 +47,7 @@ namespace Proyecto_3.Data
                 Correo = "admin@gmail.com",
                 Password = "1234",
                 Role = "ADMIN",
-                Activo = true
+                
             },
             new User
             {
@@ -58,13 +56,15 @@ namespace Proyecto_3.Data
                 Correo = "user@gmail.com",
                 Password = "1234",
                 Role = "USER",
-                Activo = true
+              
             }
 );
+        }
     }
+
 }
-            
-        
-    
+
+
+
 
 

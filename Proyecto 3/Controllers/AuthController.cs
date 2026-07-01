@@ -1,6 +1,5 @@
 //using backend.data;
 using backend.DTOs;
-using backend.Models;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
