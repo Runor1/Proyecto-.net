@@ -12,8 +12,8 @@ using Proyecto_3.Data;
 namespace Proyecto_3.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260629013103_PermitirUserIdNullEnMascotas")]
-    partial class PermitirUserIdNullEnMascotas
+    [Migration("20260701024404_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -137,7 +137,7 @@ namespace Proyecto_3.Migrations
                     b.ToTable("tipo_mascotas");
                 });
 
-            modelBuilder.Entity("User", b =>
+            modelBuilder.Entity("Proyecto_3.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -167,6 +167,24 @@ namespace Proyecto_3.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Correo = "admin@gmail.com",
+                            Nombre = "admin",
+                            Password = "1234",
+                            Role = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Correo = "user@gmail.com",
+                            Nombre = "user",
+                            Password = "1234",
+                            Role = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Proyecto_3.Models.Cita", b =>
@@ -183,7 +201,7 @@ namespace Proyecto_3.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("User", "User")
+                    b.HasOne("Proyecto_3.Models.User", "User")
                         .WithMany("Citas")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -215,7 +233,7 @@ namespace Proyecto_3.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("User", "User")
+                    b.HasOne("Proyecto_3.Models.User", "User")
                         .WithMany("Mascotas")
                         .HasForeignKey("UserId");
 
@@ -241,7 +259,7 @@ namespace Proyecto_3.Migrations
                     b.Navigation("Mascotas");
                 });
 
-            modelBuilder.Entity("User", b =>
+            modelBuilder.Entity("Proyecto_3.Models.User", b =>
                 {
                     b.Navigation("Citas");
 

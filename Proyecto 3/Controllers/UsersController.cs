@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_3.Data;
+using Proyecto_3.Models;
 
+namespace Proyecto_3.Controllers
+{ 
 [Route("api/[controller]")]
 [ApiController]
 public class UsersController : ControllerBase
@@ -97,4 +100,5 @@ public class UsersController : ControllerBase
     {
         return _context.Users.Any(e => e.Id == id);
     }
+}
 }

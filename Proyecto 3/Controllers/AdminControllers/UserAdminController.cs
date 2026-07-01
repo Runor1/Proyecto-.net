@@ -1,8 +1,9 @@
-Ôªøusing Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_3.Data;
 using Proyecto_3.DTOs.Users;
 using Microsoft.AspNetCore.Identity;
+using Proyecto_3.Models;
 
 namespace Proyecto_3.Controllers.AdminControllers
 {
@@ -60,7 +61,7 @@ namespace Proyecto_3.Controllers.AdminControllers
             var correoExiste = await _context.Users.AnyAsync(u => u.Correo == dto.Correo);
 
             if (correoExiste)
-                return BadRequest(new { success = false, message = "El correo ya est√° registrado" });
+                return BadRequest(new { success = false, message = "El correo ya est· registrado" });
 
             var usuario = new User
             {
@@ -100,7 +101,7 @@ namespace Proyecto_3.Controllers.AdminControllers
                 .AnyAsync(u => u.Correo == dto.Correo && u.Id != id);
 
             if (correoExiste)
-                return BadRequest(new { success = false, message = "El correo ya est√° registrado por otro usuario" });
+                return BadRequest(new { success = false, message = "El correo ya est· registrado por otro usuario" });
 
             usuario.Nombre = dto.Nombre;
             usuario.Correo = dto.Correo;

@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Proyecto_3.Migrations
 {
     /// <inheritdoc />
@@ -70,7 +72,7 @@ namespace Proyecto_3.Migrations
                     Peso = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Altura = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: true),
                     TipoMascotaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -86,8 +88,7 @@ namespace Proyecto_3.Migrations
                         name: "FK_mascotas_users_UserId",
                         column: x => x.UserId,
                         principalTable: "users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -123,6 +124,15 @@ namespace Proyecto_3.Migrations
                         principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "users",
+                columns: new[] { "Id", "Correo", "Nombre", "Password", "Role" },
+                values: new object[,]
+                {
+                    { 1, "admin@gmail.com", "admin", "1234", "ADMIN" },
+                    { 2, "user@gmail.com", "user", "1234", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
